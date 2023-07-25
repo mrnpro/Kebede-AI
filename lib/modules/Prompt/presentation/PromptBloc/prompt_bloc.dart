@@ -18,6 +18,9 @@ class PromptBloc extends Bloc<PromptEvent, PromptState> {
   PromptBloc(this._promptUsecase, this._flutterTts, this._speechToText)
       : super(KebedeLostInThougt()) {
     _initListening();
+
+    on<TriggerErrorEvent>(
+        (event, emit) => emit(PromptError(error: event.error)));
     on<TriggerThinkingEvent>((event, emit) => emit(KebedeThinking()));
     on<TriggerListenEvent>((event, emit) => emit(KebedeListening()));
     on<TriggerLostInThougtEvent>((event, emit) => emit(KebedeLostInThougt()));
@@ -40,7 +43,8 @@ class PromptBloc extends Bloc<PromptEvent, PromptState> {
             await _promptUsecase(result.alternates.last.recognizedWords);
 
         response.fold((error) {
-          emit(_handleError(error));
+          add(TriggerErrorEvent(_handleError(error)));
+          // emit(_handleError(error));
         }, (data) {
           // setup the male accent voice and locale
           _setupVoice().then((value) {
@@ -58,14 +62,13 @@ class PromptBloc extends Bloc<PromptEvent, PromptState> {
   }
 
   //
-  PromptError _handleError(Failure error) {
+  String? _handleError(Failure error) {
     if (error is ServerFailure) {
-      return PromptError(error: error.message);
+      return error.message;
     } else if (error is CacheFailure) {
-      return PromptError(error: error.message);
+      return error.message;
     }
-    return const PromptError(
-        error: "Something went wrong please try again latter");
+    return "Something went wrong please try again latter";
   }
 
   void _initListening() async {
