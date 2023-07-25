@@ -47,6 +47,7 @@ dependencies:
   rive: ^0.11.5
   device_preview: ^1.1.0
   dartz: ^0.10.1
+  fluttertoast: ^8.2.2
 
 dev_dependencies:
   flutter_test:
