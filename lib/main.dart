@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'core/constants/colors.dart';
@@ -10,8 +11,8 @@ void main() async {
   await getIt.allReady().then((value) {
     runApp(
       DevicePreview(
-        enabled: false,
-        //enabled: !kReleaseMode,
+        //  enabled: true,
+        enabled: !kReleaseMode,
         builder: (context) => const MyApp(), // Wrap your app
       ),
     );
