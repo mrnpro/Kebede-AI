@@ -145,9 +145,13 @@ class _PromptScreenState extends State<PromptScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.mic, size: 50, color: kSecondaryColor),
-            Text("HOLD",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, color: kSecondaryColor))
+            BlocBuilder<PromptBloc, PromptState>(
+              builder: (context, state) {
+                return Text(state is KebedeListening ? "Speak" : "HOLD",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: kSecondaryColor));
+              },
+            )
           ],
         )),
       ),
